@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="../../index.xhtml">
+        <ui:define name="titulo">Edição de Pessoa</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:growl/>
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <p:outputLabel value="Dados de Pessoa"/>
+                        </f:facet>
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="Cancelar" action="#{controlepessoa.cancelar()}"
+                                ajax="false" immediate="true"/> <!-- immediate true serve para não validar os dados no formulario -->
+                                <p:commandButton value="Salvar" action="#{controlepessoa.salvar()}"
+                                ajax="false" icon="ui-icon-disk"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="ID"/>
+                        <p:inputText value="#{controlepessoa.pessoa.id}" size="5" readonly="true"/> <!-- readonly deixando true fica somente leitura e não pode ser editado -->
+                        <p:outputLabel value="CPF" for="txtCPF"/>
+                        <p:inputText value="#{controlepessoa.pessoa.cpf}" id="txtCPF" size="14" maxlength="14" placeholder="obrigatorio"/>
+                        <p:outputLabel value="Email" for="txtEMAIL"/>
+                        <p:inputText value="#{controlepessoa.pessoa.email}" id="txtEMAIL" size="30" maxlength="30" placeholder="obrigatorio"/>
+                        <p:outputLabel value="Nome" for="txtNome"/>
+                        <p:inputText value="#{controlepessoa.pessoa.nome}" id="txtNome" size="50" maxlength="50" placeholder="obrigatorio"/>
+                        <p:outputLabel value="RG" for="txtRG"/>
+                        <p:inputText value="#{controlepessoa.pessoa.rg}" id="txtRG" size="10" maxlength="10" placeholder="obrigatorio"/>
+                        <p:outputLabel value="Telefone" for="txtTelefone"/>
+                        <p:inputText value="#{controlepessoa.pessoa.telefone}" id="txtTelefone" size="14" maxlength="14" placeholder="obrigatorio"/>
+                    </p:panelGrid>
+                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

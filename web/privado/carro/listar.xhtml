@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    
+    <ui:composition template="../../index.xhtml">
+        <ui:define name="titulo">Listagem de Carros</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:messages/>
+                <p:growl/>
+                <p:commandButton value="Novo" action="#{controlecarro.novo()}" ajax="false" icon="ui-icon-plus"/>
+                <h1 align="center">Tabela de Carros</h1>
+                <p:dataTable value="#{controlecarro.dao.lista}" var="carro">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{carro.id}"/>
+                    </p:column>
+                    <p:column headerText="PLACA">
+                        <p:outputLabel value="#{carro.placa}"/>
+                    </p:column>
+                    <p:column headerText="RENAVAM">
+                        <p:outputLabel value="#{carro.renavam}"/>
+                    </p:column>
+                    <p:column headerText="FABRICANTE">
+                        <p:outputLabel value="#{carro.fabricante}"/>
+                    </p:column>
+                    <p:column headerText="MODELO">
+                        <p:outputLabel value="#{carro.modelo}"/>
+                    </p:column>
+                    <p:column headerText="ANO FABRICAÇÃO">
+                        <p:outputLabel value="#{carro.anofabricacao}"/>
+                    </p:column>
+                    <p:column headerText="ANO MODELO">
+                        <p:outputLabel value="#{carro.anomodelo}"/>
+                    </p:column>
+                    <p:column headerText="PESSOA">
+                        <p:outputLabel value="#{carro.pessoa.nome}"/>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton action="#{controlecarro.editar(carro.id)}"
+                            ajax="false" icon="ui-icon-pencil" title="Editar"/>
+                            
+                            <p:commandButton action="#{controlecarro.remover(carro.id)}"
+                             ajax="false" icon="ui-icon-trash" title="Remover" update="@form"
+                             onclick="if(!confirm('Confirma a exclusão?')) return false"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

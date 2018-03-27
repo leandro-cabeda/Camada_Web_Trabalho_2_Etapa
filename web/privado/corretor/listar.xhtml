@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"    
+      xmlns:p="http://primefaces.org/ui"> 
+      
+      
+      <ui:composition template="../../index.xhtml">
+        <ui:define name="titulo">Listagem de Corretores</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:messages/>
+                <p:growl/>
+                <p:commandButton value="Novo" action="#{controlecorretor.novo()}" ajax="false" icon="ui-icon-plus"/>
+                <h1 align="center">Tabela de Corretores</h1>
+                <p:dataTable value="#{controlecorretor.dao.lista}" var="corretor">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{corretor.id}"/>
+                    </p:column>
+                    <p:column headerText="CPF">
+                        <p:outputLabel value="#{corretor.cpf}"/>
+                    </p:column>
+                    <p:column headerText="EMAIL">
+                        <p:outputLabel value="#{corretor.email}"/>
+                    </p:column>
+                    <p:column headerText="NOME">
+                        <p:outputLabel value="#{corretor.nome}"/>
+                    </p:column>
+                    <p:column headerText="RG">
+                        <p:outputLabel value="#{corretor.rg}"/>
+                    </p:column>
+                    <p:column headerText="TELEFONE">
+                        <p:outputLabel value="#{corretor.telefone}"/>
+                    </p:column>
+                    <p:column headerText="PERCENTUAL DE COMISSÃO">
+                        <p:outputLabel value="#{corretor.percentualComissao}"/>
+                    </p:column>
+                    <p:column headerText="NOME DE USUÁRIO">
+                        <p:outputLabel value="#{corretor.nomeUsuario}"/>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton action="#{controlecorretor.editar(corretor.id)}"
+                            ajax="false" icon="ui-icon-pencil" title="Editar"/>
+                            
+                            <p:commandButton action="#{controlecorretor.remover(corretor.id)}"
+                             ajax="false" icon="ui-icon-trash" title="Remover" update="@form"
+                             onclick="if(!confirm('Confirma a exclusão?')) return false"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
