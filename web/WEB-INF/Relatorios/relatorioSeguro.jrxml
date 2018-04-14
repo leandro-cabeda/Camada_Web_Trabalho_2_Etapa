@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioSeguro" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="339649bd-b53f-47ac-8af8-094ff5606238">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DadosSeguro"/>
+	<style name="lista">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}%2==1)]]></conditionExpression>
+			<style backcolor="#B1BFB0"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="carro" class="Classes.Carro">
+		<fieldDescription><![CDATA[carro]]></fieldDescription>
+	</field>
+	<field name="valorFipe" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorFipe]]></fieldDescription>
+	</field>
+	<field name="data" class="java.util.Calendar">
+		<fieldDescription><![CDATA[data]]></fieldDescription>
+	</field>
+	<field name="valorTotal" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorTotal]]></fieldDescription>
+	</field>
+	<field name="corretor" class="Classes.Corretor">
+		<fieldDescription><![CDATA[corretor]]></fieldDescription>
+	</field>
+	<field name="fimvigencia" class="java.util.Calendar">
+		<fieldDescription><![CDATA[fimvigencia]]></fieldDescription>
+	</field>
+	<field name="iniciovigencia" class="java.util.Calendar">
+		<fieldDescription><![CDATA[iniciovigencia]]></fieldDescription>
+	</field>
+	<field name="cobertura" class="java.util.List">
+		<fieldDescription><![CDATA[cobertura]]></fieldDescription>
+	</field>
+	<field name="sinistro" class="java.util.List">
+		<fieldDescription><![CDATA[sinistro]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="79" forecolor="#0E0F0E" backcolor="#152AEB" uuid="bcabb26c-bdeb-49d5-91f7-8cb145088a6b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="79" forecolor="#FAFCFB" backcolor="#F7FCF9" uuid="e994025b-07b1-4d61-8ee9-73b93561836b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="26"/>
+				</textElement>
+				<text><![CDATA[Relatorio de Seguro]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="138" splitType="Stretch">
+			<rectangle>
+				<reportElement style="lista" x="0" y="0" width="555" height="90" uuid="a02569e5-d097-4b8c-bcef-aefeaad82477"/>
+			</rectangle>
+			<textField>
+				<reportElement x="50" y="0" width="70" height="30" uuid="2d10c25e-8f5c-4fb4-875a-d26ee710a537"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data}.getTime()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="30" uuid="4e69bc4e-455e-4d25-a14d-2c0112194fb5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="0" width="90" height="30" uuid="0d775242-82c7-4296-bae0-68516f9c2af0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iniciovigencia}.getTime()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="0" width="130" height="30" uuid="a7b4e557-115b-4485-881f-fe7be37d4f4c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Inicio Vigência:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="0" width="84" height="30" uuid="34b36410-6a4b-472a-b546-4926e3210980"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fimvigencia}.getTime()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="360" y="0" width="110" height="30" uuid="8919f20d-f985-4a39-909f-ebabc921332e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Fim Vigência:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="30" width="80" height="30" uuid="8fbfe0da-058a-4935-a227-95d18f5dda97"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="100" height="30" uuid="02762c39-0a05-47ae-bedd-61b42b0bc407"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Valor Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="350" y="30" width="80" height="30" uuid="0df6cddf-4bb5-4a95-bcbe-fca322504f40"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorFipe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="30" width="90" height="30" uuid="791ec12c-8ea5-4c1e-80ff-8c745cf1ff1e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Valor Fipe:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="60" width="80" height="30" uuid="4895a556-fb61-4666-898d-ae231c2f54fc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carro}.getPlaca()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="100" height="30" uuid="3e7e951d-be98-4cfb-94b9-9d8f0407e2c5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Carro Placa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="332" y="60" width="98" height="30" uuid="cf383976-42a7-4ba9-9b5f-24dc46ea9ab7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{corretor}.getNome()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="60" width="122" height="30" uuid="99518071-cec1-4474-81eb-b2c549efc572"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Corretor Nome:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="90" width="554" height="22" uuid="618d035c-0552-4154-bda2-9c3b666771ec"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(
+	(java.util.List<Classes.Cobertura>)$F{cobertura}
+)]]></dataSourceExpression>
+				<subreportExpression><![CDATA["coberturas.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="112" width="554" height="26" uuid="ca78f72c-9b6c-4e23-bda4-f0427540c3c9"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(
+	(java.util.List<Classes.Sinistro>)$F{sinistro}
+)]]></dataSourceExpression>
+				<subreportExpression><![CDATA["sinistros.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="90">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="11" y="60" width="130" height="30" uuid="62e98015-8187-42b7-bf55-0a5107bcce7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="331" y="60" width="100" height="30" uuid="04483924-2455-4e06-a4d1-fd64e512f7d9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="431" y="60" width="100" height="30" uuid="bd601fc6-ac8a-485b-b920-2bd73e26ab7d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

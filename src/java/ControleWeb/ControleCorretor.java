@@ -10,23 +10,23 @@ import ClassesDao.CorretorDao;
 import Util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Leandro
  */
 @ManagedBean(name="controlecorretor")
-@SessionScoped
+@ViewScoped
 public class ControleCorretor implements Serializable {
     
-    private CorretorDao dao;
+    private CorretorDao<Corretor> dao;
     private Corretor corretor;
     
     
     public ControleCorretor()
     {
-        dao= new CorretorDao();
+        dao= new CorretorDao<>();
     }
     
     public String listar()
@@ -34,42 +34,44 @@ public class ControleCorretor implements Serializable {
         return "/privado/corretor/listar?faces-redirect=true";
     }
     
-    public String novo()
+    public void novo()
     {
         corretor=new Corretor();
         
-        return "formulario?faces-redirect=true";
     }
     
-    public String salvar()
+    public void salvar()
     {
-        if(dao.salvar(corretor))
+        boolean persistiu=false;
+        
+        if(corretor.getId()==null)
+        {
+            persistiu=dao.persist(corretor);
+        }
+        else
+        {
+            persistiu=dao.merge(corretor);
+        }
+        if(persistiu)
         {
             Util.mensageminformacao(dao.getMensagem());
-            return "listar?faces-redirect=true";
         }
         else
         {
             Util.mensagemErro(dao.getMensagem());
-            return "formulario?faces-redirect=true";
         }
     }
     
-    public String cancelar()
-    {
-        return "listar?faces-redirect=true";
-    }
     
-    public String editar(Integer id)
+    public void editar(Integer id)
     {
         corretor=dao.localizar(id);
-        return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id)
     {
         corretor=dao.localizar(id);
-        if(dao.remover(corretor))
+        if(dao.remove(corretor))
         {
             Util.mensageminformacao(dao.getMensagem());
         }

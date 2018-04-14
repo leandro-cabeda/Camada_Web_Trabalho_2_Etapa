@@ -2,55 +2,171 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"    
-      xmlns:p="http://primefaces.org/ui"> 
-      
-      
-      <ui:composition template="../../index.xhtml">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../../index.xhtml">
         <ui:define name="titulo">Listagem de Corretores</ui:define>
         <ui:define name="conteudo">
-            <h:form>
-                <p:messages/>
+            <h:form id="FormListagem" prependId="false">
                 <p:growl/>
-                <p:commandButton value="Novo" action="#{controlecorretor.novo()}" ajax="false" icon="ui-icon-plus"/>
-                <h1 align="center">Tabela de Corretores</h1>
-                <p:dataTable value="#{controlecorretor.dao.lista}" var="corretor">
+                <p:commandButton value="Novo" actionListener="#{controlecorretor.novo()}"
+                                 icon="ui-icon-plus" oncomplete="PF('dlg').show();"
+                                 update="FormEdicao" process="@this"/>
+                <h1 align="center">Listagem de Corretores</h1>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem"/>
+                        <p:selectOneMenu value="#{controlecorretor.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                            <f:selectItem itemLabel="CPF" itemValue="cpf"/>
+                            <f:selectItem itemLabel="RG" itemValue="rg"/>
+                            <f:selectItem itemLabel="EMAIL" itemValue="email"/>
+                            <f:selectItem itemLabel="TELEFONE" itemValue="telefone"/>
+                            <f:selectItem itemLabel="PercentualComissao" itemValue="percentualcomissao"/>
+                            <f:selectItem itemLabel="NomeUsuario" itemValue="nomeusuario"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtrar:"/>
+                        <p:inputText value="#{controlecorretor.dao.filtro}" size="15">
+                            <p:ajax update="listagem" event="keyup"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem" icon="ui-icon-search"/>
+                        <p:outputLabel value="Máximo Objetos"/>
+                        <p:inputNumber value="#{controlecorretor.dao.maximoObjetos}" decimalPlaces="0" decimalSeparator="" thousandSeparator=""/>
+                        <p:commandButton value="Primeiro" actionListener="#{controlecorretor.dao.primeiro()}"
+                                         icon="ui-icon-seek-first" update="listagem"/>
+                        <p:commandButton value="Anterior" actionListener="#{controlecorretor.dao.anterior()}"
+                                         icon="ui-icon-seek-prev" update="listagem"/>
+                        <p:commandButton value="Proximo" actionListener="#{controlecorretor.dao.proximo()}"
+                                         icon="ui-icon-seek-next" update="listagem"/>
+                        <p:commandButton value="Ultimo" actionListener="#{controlecorretor.dao.ultimo()}"
+                                         icon="ui-icon-seek-end" update="listagem"/>
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controlecorretor.dao.listaObjetos}" var="obj" id="listagem">
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controlecorretor.dao.mensagemNavegacao}"/>
+                    </f:facet>
                     <p:column headerText="ID">
-                        <p:outputLabel value="#{corretor.id}"/>
+                        <p:outputLabel value="#{obj.id}"/>
                     </p:column>
+
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
+                    </p:column>
+
                     <p:column headerText="CPF">
-                        <p:outputLabel value="#{corretor.cpf}"/>
+                        <p:outputLabel value="#{obj.cpf}"/>
                     </p:column>
-                    <p:column headerText="EMAIL">
-                        <p:outputLabel value="#{corretor.email}"/>
-                    </p:column>
-                    <p:column headerText="NOME">
-                        <p:outputLabel value="#{corretor.nome}"/>
-                    </p:column>
+
                     <p:column headerText="RG">
-                        <p:outputLabel value="#{corretor.rg}"/>
+                        <p:outputLabel value="#{obj.rg}"/>
                     </p:column>
+
+
+                    <p:column headerText="EMAIL">
+                        <p:outputLabel value="#{obj.email}"/>
+                    </p:column>
+
                     <p:column headerText="TELEFONE">
-                        <p:outputLabel value="#{corretor.telefone}"/>
+                        <p:outputLabel value="#{obj.telefone}"/>
                     </p:column>
-                    <p:column headerText="PERCENTUAL DE COMISSÃO">
-                        <p:outputLabel value="#{corretor.percentualComissao}"/>
+                    
+                    <p:column headerText="PercentualComissao">
+                        <p:outputLabel value="#{obj.percentualComissao}"/>
                     </p:column>
-                    <p:column headerText="NOME DE USUÁRIO">
-                        <p:outputLabel value="#{corretor.nomeUsuario}"/>
+
+                    <p:column headerText="NomeUsuario">
+                        <p:outputLabel value="#{obj.nomeUsuario}"/>
                     </p:column>
+
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton action="#{controlecorretor.editar(corretor.id)}"
-                            ajax="false" icon="ui-icon-pencil" title="Editar"/>
-                            
-                            <p:commandButton action="#{controlecorretor.remover(corretor.id)}"
-                             ajax="false" icon="ui-icon-trash" title="Remover" update="@form"
-                             onclick="if(!confirm('Confirma a exclusão?')) return false"/>
+                            <p:commandButton actionListener="#{controlecorretor.editar(obj.id)}" 
+                                             icon="ui-icon-pencil" title="Editar" 
+                                             oncomplete="PF('dlg').show();"  update="FormEdicao" process="@this"/>
+                            <p:commandButton actionListener="#{controlecorretor.remover(obj.id)}" 
+                                             icon="ui-icon-trash" title="Remover"
+                                             update="@form" process="@this"
+                                             onclick="if (!confirm('Confirma a exclusão?'))
+                                                         return false"/>
                         </div>
                     </p:column>
+
                 </p:dataTable>
             </h:form>
+        </ui:define>
+
+        <ui:define name="dialogos">
+            <p:dialog widgetVar="dlg" header="Edição Corretor" modal="true" resizable="false" width="60%" height="440">
+                <h:form id="FormEdicao" prependId="false">
+                    <p:growl id="growl"/>
+                    <p:tabView id="tab" prependId="false">
+                        <p:tab title="Dados Corretor">
+                            <div align="center">
+                                <p:panelGrid columns="2" >
+
+                                    <p:outputLabel value="ID"/>
+                                    <p:inputText value="#{controlecorretor.corretor.id}" readonly="true" size="5"/>
+
+                                    <p:outputLabel value="Nome" for="txtNome"/>
+                                    <p:inputText id="txtNome" value="#{controlecorretor.corretor.nome}" size="50" maxlength="50"
+                                                 placeholder="obrigatorio" />
+
+                                    <p:outputLabel value="Telefone" for="txtTELEFONE"/>
+                                    <p:inputMask id="txtTELEFONE" mask="(99)99999-9999" value="#{controlecorretor.corretor.telefone}" 
+                                                 size="14" maxlength="14" placeholder="obrigatorio"/>
+
+                                    <p:outputLabel value="Email" for="txtEmail"/>
+                                    <p:inputText id="txtEmail" value="#{controlecorretor.corretor.email}" 
+                                                 size="30" maxlength="30"
+                                                 placeholder="obrigatorio" />
+
+                                    <p:outputLabel value="RG" for="txtRG"/>
+                                    <p:inputMask id="txtRG" mask="9999999999" value="#{controlecorretor.corretor.rg}" 
+                                                 size="10" maxlength="10"
+                                                 placeholder="obrigatorio"/>
+
+                                    <p:outputLabel value="CPF" for="txtCPF"/>
+                                    <p:inputMask id="txtCPF" mask="999.999.999-99" value="#{controlecorretor.corretor.cpf}" 
+                                                 size="14" maxlength="14" placeholder="obrigatorio"/>
+                                    
+                                    <p:outputLabel value="PercentualComissao" for="txtPercentualComissao"/>
+                                    <p:inputNumber id="txtPercentualComissao" value="#{controlecorretor.corretor.percentualComissao}"
+                                                   decimalPlaces="2" placeholder="obrigatório" decimalSeparator="." 
+                                                   thousandSeparator="" >                                       
+                                    </p:inputNumber>
+
+                                    <p:outputLabel value="Usuário" for="txtUsuario"/>
+                                    <p:inputText id="txtUsuario" value="#{controlecorretor.corretor.nomeUsuario}" placeholder="Obrigatório"
+                                                 size="20" maxlength="20" requiredMessage="O nome do usuário deve ser informado"/>
+                                    
+                                    <p:outputLabel value="Senha" for="txtSenha"/>
+                                    <p:password id="txtSenha" value="#{controlecorretor.corretor.senha}" placeholder="Obrigatório"
+                                                size="20" maxlength="20" requiredMessage="A senha deve ser informada"/>
+
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                    </p:tabView>
+                    <p:panel>
+                        <div align="center">
+                            <p:commandButton value="Salvar"
+                                             icon="ui-icon-disk"
+                                             actionListener="#{controlecorretor.salvar()}"
+                                             oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                             update="FormEdicao FormListagem"
+                                             />   
+                        </div>
+                    </p:panel>
+
+                    <ui:include src="../../ajaxstatus.xhtml"/>
+                </h:form>
+            </p:dialog>
+
         </ui:define>
     </ui:composition>
 </html>

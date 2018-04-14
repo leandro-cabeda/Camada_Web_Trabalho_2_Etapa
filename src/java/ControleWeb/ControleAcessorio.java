@@ -5,10 +5,12 @@
  */
 package ControleWeb;
 
-import Classes.Pessoa;
-import ClassesDao.PessoaDao;
+import Classes.Acessorios;
+import ClassesDao.AcessorioDao;
 import Util.Util;
+import Util.UtilRelatorios;
 import java.io.Serializable;
+import java.util.HashMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -16,27 +18,33 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Leandro
  */
-@ManagedBean(name="controlepessoa")
+@ManagedBean(name="controleacessorio")
 @ViewScoped
-public class ControlePessoa implements Serializable {
+public class ControleAcessorio implements Serializable {
     
-    private PessoaDao<Pessoa> dao;
-    private Pessoa pessoa;
+    private AcessorioDao<Acessorios> dao;
+    private Acessorios acessorio;
     
     
-    public ControlePessoa()
+    public ControleAcessorio()
     {
-        dao= new PessoaDao<>();
+        dao= new AcessorioDao<>();
+    }
+    
+    public void imprimeAcessorio()
+    {
+        HashMap param= new HashMap();
+        UtilRelatorios.imprimeRelatorio("relatorioAcessorio", param,dao.getListaTodos());
     }
     
     public String listar()
     {
-        return "/privado/pessoa/listar?faces-redirect=true";
+        return "/privado/acessorio/listar?faces-redirect=true";
     }
     
     public void novo()
     {
-        pessoa=new Pessoa();
+        acessorio=new Acessorios();
         
     }
     
@@ -44,13 +52,13 @@ public class ControlePessoa implements Serializable {
     {
         boolean persistiu=false;
         
-        if(pessoa.getId()==null)
+        if(acessorio.getId()==null)
         {
-            persistiu=dao.persist(pessoa);
+            persistiu=dao.persist(acessorio);
         }
         else
         {
-            persistiu=dao.merge(pessoa);
+            persistiu=dao.merge(acessorio);
         }
         if(persistiu)
         {
@@ -65,13 +73,13 @@ public class ControlePessoa implements Serializable {
     
     public void editar(Integer id)
     {
-        pessoa=dao.localizar(id);
+        acessorio=dao.localizar(id);
     }
     
     public void remover(Integer id)
     {
-        pessoa=dao.localizar(id);
-        if(dao.remove(pessoa))
+        acessorio=dao.localizar(id);
+        if(dao.remove(acessorio))
         {
             Util.mensageminformacao(dao.getMensagem());
         }
@@ -82,20 +90,21 @@ public class ControlePessoa implements Serializable {
         
     }
 
-    public PessoaDao getDao() {
+    public AcessorioDao<Acessorios> getDao() {
         return dao;
     }
 
-    public void setDao(PessoaDao dao) {
+    public void setDao(AcessorioDao<Acessorios> dao) {
         this.dao = dao;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Acessorios getAcessorio() {
+        return acessorio;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setAcessorio(Acessorios acessorio) {
+        this.acessorio = acessorio;
     }
+
     
 }

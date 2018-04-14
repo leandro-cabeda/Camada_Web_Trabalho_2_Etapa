@@ -5,8 +5,10 @@
  */
 package ControleWeb;
 
-import Classes.Pessoa;
-import ClassesDao.PessoaDao;
+import Classes.Seguro;
+import Classes.Sinistro;
+import ClassesDao.SinistroDao;
+import ClassesDao.SeguroDao;
 import Util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
@@ -16,27 +18,29 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Leandro
  */
-@ManagedBean(name="controlepessoa")
+@ManagedBean(name="controlesinistro")
 @ViewScoped
-public class ControlePessoa implements Serializable {
+public class ControleSinistro implements Serializable {
     
-    private PessoaDao<Pessoa> dao;
-    private Pessoa pessoa;
+    private SinistroDao<Sinistro> dao;
+    private Sinistro sinistro;
+    private SeguroDao<Seguro> daoSeguro;
     
     
-    public ControlePessoa()
+    public ControleSinistro()
     {
-        dao= new PessoaDao<>();
+        dao= new SinistroDao<>();
+        daoSeguro=new SeguroDao<>();
     }
     
     public String listar()
     {
-        return "/privado/pessoa/listar?faces-redirect=true";
+        return "/privado/sinistro/listar?faces-redirect=true";
     }
     
     public void novo()
     {
-        pessoa=new Pessoa();
+        sinistro=new Sinistro();
         
     }
     
@@ -44,13 +48,13 @@ public class ControlePessoa implements Serializable {
     {
         boolean persistiu=false;
         
-        if(pessoa.getId()==null)
+        if(sinistro.getId()==null)
         {
-            persistiu=dao.persist(pessoa);
+            persistiu=dao.persist(sinistro);
         }
         else
         {
-            persistiu=dao.merge(pessoa);
+            persistiu=dao.merge(sinistro);
         }
         if(persistiu)
         {
@@ -65,13 +69,13 @@ public class ControlePessoa implements Serializable {
     
     public void editar(Integer id)
     {
-        pessoa=dao.localizar(id);
+        sinistro=dao.localizar(id);
     }
     
     public void remover(Integer id)
     {
-        pessoa=dao.localizar(id);
-        if(dao.remove(pessoa))
+        sinistro=dao.localizar(id);
+        if(dao.remove(sinistro))
         {
             Util.mensageminformacao(dao.getMensagem());
         }
@@ -82,20 +86,30 @@ public class ControlePessoa implements Serializable {
         
     }
 
-    public PessoaDao getDao() {
+    public SinistroDao<Sinistro> getDao() {
         return dao;
     }
 
-    public void setDao(PessoaDao dao) {
+    public void setDao(SinistroDao<Sinistro> dao) {
         this.dao = dao;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Sinistro getSinistro() {
+        return sinistro;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setSinistro(Sinistro sinistro) {
+        this.sinistro = sinistro;
     }
+
+    public SeguroDao<Seguro> getDaoSeguro() {
+        return daoSeguro;
+    }
+
+    public void setDaoSeguro(SeguroDao<Seguro> daoSeguro) {
+        this.daoSeguro = daoSeguro;
+    }
+   
+
     
 }

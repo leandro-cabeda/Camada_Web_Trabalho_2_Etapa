@@ -7,32 +7,64 @@
       xmlns:p="http://primefaces.org/ui">
     <f:view encoding="ISO-8859-1" contentType="text/html">
         <h:head>
-            <title><ui:insert name="titulo">titulo da pagina</ui:insert></title>
+            <title><ui:insert name="titulo">Sistema</ui:insert></title>
             <h:outputStylesheet library="css" name="estilos.css"/>
             <h:outputScript library="js" name="scripts.js" />
         </h:head>
         
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" header="Cadastro de dados" style="text-align: center">
+            <p:layoutUnit position="north" header="Sistema de Controle de Dados" style="text-align: center">
                 <h:form id="menu">
                     <p:megaMenu>
-                        <p:submenu label="Cadastros">
+                        <p:menuitem value="Inicio" url="/index.xhtml" icon="ui-icon-home"/>
+                        
+                        <p:submenu label="Cadastros" rendered="#{controlelogin.usuarioLogado!=null}">
                             <p:column>
-                                <p:submenu label="Basicos">
+                                <p:submenu label="Listas">
                                     <p:menuitem action="#{controlepessoa.listar()}" value="Listagem de Pessoas" ajax="false"/>
                                     <p:menuitem action="#{controlecorretor.listar()}" value="Listagem de Corretores" ajax="false"/>
-                                    <p:menuitem action="#{controleacessorios.listar()}" value="Listagem de Acessorios" ajax="false"/>
+                                    <p:menuitem action="#{controleseguro.listar()}" value="Listagem de Seguros" ajax="false"/>
                                     <p:menuitem action="#{controlecarro.listar()}" value="Listagem de Carros" ajax="false"/>
+                                    <p:menuitem action="#{controleacessorio.listar()}" value="Listagem de Acessorios" ajax="false"/>
                                 </p:submenu>
                             </p:column>
                         </p:submenu>
+                        
+                        <p:submenu label="Relatórios" rendered="#{controlelogin.usuarioLogado!=null}">
+                            <p:column>
+                                <p:submenu label="Acessorios">
+                                    <p:menuitem action="#{controleacessorio.imprimeAcessorio()}" 
+                                                value="Relatório Acessorios"
+                                                ajax="false" target="_blank"/>
+
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        
+                        <p:submenu label="Usuário">
+                            <p:column>
+                                <p:submenu label="Ações">
+                                    <p:menuitem value="#{controlelogin.usuarioLogado.nome} : Sair do Sistema"
+                                                rendered="#{controlelogin.usuarioLogado!=null}"
+                                                ajax="false"
+                                                action="#{controlelogin.efetuarLogout()}"
+                                                icon="ui-icon-power"/>
+                                    <p:menuitem value="Entrar no Sistema"
+                                                rendered="#{controlelogin.usuarioLogado==null}"
+                                                ajax="false"
+                                                action="#{controlelogin.paginaLogin()}"
+                                                icon="ui-icon-person"/>
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        
                     </p:megaMenu>
                 </h:form>
             </p:layoutUnit>
             
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo">
-                    
+                    <h1 align="center" style="font-size: 150px;color:red;"><marquee direction="left" scrollamoun="200"> Seja bem vindo ao Sistema</marquee></h1>
                 </ui:insert>
             </p:layoutUnit>
             
@@ -41,20 +73,14 @@
             </ui:insert>
             
             <p:layoutUnit position="south">
-                
+                <div align="center" 
+                     style="font-size: 20px; color: white; text-transform: uppercase;"> 
+                    <ui:include src="ajaxstatus.xhtml"/>
+
+                    Todos os Direitos Reservados
+                </div>
             </p:layoutUnit>
         </p:layout>
     </f:view>
-            
-        
-        <!--<h1 align="center">Cadastros</h1>
-        <h:form style="margin-left: 350px">
-             <h:panelGrid columns="4">
-                 <h:commandButton style="width:140px;height:100px;" value="Cadastrar Corretor"></h:commandButton>
-                 <h:commandButton style="width:140px;height:100px;"  value="Cadastrar Pessoa"></h:commandButton>
-                 <h:commandButton style="width:140px;height:100px;" value="Cadastrar Carro"></h:commandButton>
-                 <h:commandButton style="width:140px;height:100px;" value="Cadastrar Acessorio"></h:commandButton>      
-             </h:panelGrid>
-        </h:form>-->
 </html>
 

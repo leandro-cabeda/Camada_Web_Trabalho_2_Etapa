@@ -3,54 +3,209 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    
-    
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <ui:composition template="../../index.xhtml">
         <ui:define name="titulo">Listagem de Carros</ui:define>
         <ui:define name="conteudo">
-            <h:form>
-                <p:messages/>
+            <h:form id="FormListagem" prependId="false">
                 <p:growl/>
-                <p:commandButton value="Novo" action="#{controlecarro.novo()}" ajax="false" icon="ui-icon-plus"/>
-                <h1 align="center">Tabela de Carros</h1>
-                <p:dataTable value="#{controlecarro.dao.lista}" var="carro">
+                <p:commandButton value="Novo" actionListener="#{controlecarro.novo()}"
+                                 icon="ui-icon-plus" oncomplete="PF('dlg').show();"
+                                 update="FormEdicao" process="@this"/>
+                <h1 align="center">Listagem de Carros</h1>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem"/>
+                        <p:selectOneMenu value="#{controlecarro.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Placa" itemValue="placa"/>
+                            <f:selectItem itemLabel="Renavam" itemValue="renavam"/>
+                            <f:selectItem itemLabel="Modelo" itemValue="modelo"/>
+                            <f:selectItem itemLabel="Fabricante" itemValue="fabricante"/>
+                            <f:selectItem itemLabel="AnoFabricação" itemValue="anofabricacao"/>
+                            <f:selectItem itemLabel="AnoModelo" itemValue="anomodelo"/>
+                            <f:selectItem itemLabel="Pessoa" itemValue="pessoa.nome"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtrar:"/>
+                        <p:inputText value="#{controlecarro.dao.filtro}" size="15">
+                            <p:ajax update="listagem" event="keyup"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem" icon="ui-icon-search"/>
+                        <p:outputLabel value="Máximo Objetos"/>
+                        <p:inputNumber value="#{controlecarro.dao.maximoObjetos}" decimalPlaces="0" decimalSeparator="" thousandSeparator=""/>
+                        <p:commandButton value="Primeiro" actionListener="#{controlecarro.dao.primeiro()}"
+                                         icon="ui-icon-seek-first" update="listagem"/>
+                        <p:commandButton value="Anterior" actionListener="#{controlecarro.dao.anterior()}"
+                                         icon="ui-icon-seek-prev" update="listagem"/>
+                        <p:commandButton value="Proximo" actionListener="#{controlecarro.dao.proximo()}"
+                                         icon="ui-icon-seek-next" update="listagem"/>
+                        <p:commandButton value="Ultimo" actionListener="#{controlecarro.dao.ultimo()}"
+                                         icon="ui-icon-seek-end" update="listagem"/>
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controlecarro.dao.listaObjetos}" var="obj" id="listagem">
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controlecarro.dao.mensagemNavegacao}"/>
+                    </f:facet>
                     <p:column headerText="ID">
-                        <p:outputLabel value="#{carro.id}"/>
+                        <p:outputLabel value="#{obj.id}"/>
                     </p:column>
-                    <p:column headerText="PLACA">
-                        <p:outputLabel value="#{carro.placa}"/>
+
+                    <p:column headerText="Placa">
+                        <p:outputLabel value="#{obj.placa}"/>
                     </p:column>
-                    <p:column headerText="RENAVAM">
-                        <p:outputLabel value="#{carro.renavam}"/>
+
+                    <p:column headerText="Renavam">
+                        <p:outputLabel value="#{obj.renavam}"/>
                     </p:column>
-                    <p:column headerText="FABRICANTE">
-                        <p:outputLabel value="#{carro.fabricante}"/>
+
+                    <p:column headerText="Modelo">
+                        <p:outputLabel value="#{obj.modelo}"/>
                     </p:column>
-                    <p:column headerText="MODELO">
-                        <p:outputLabel value="#{carro.modelo}"/>
+
+
+                    <p:column headerText="Fabricante">
+                        <p:outputLabel value="#{obj.fabricante}"/>
                     </p:column>
-                    <p:column headerText="ANO FABRICAÇÃO">
-                        <p:outputLabel value="#{carro.anofabricacao}"/>
+
+                    <p:column headerText="AnoFabricação">
+                        <p:outputLabel value="#{obj.anofabricacao}"/>
                     </p:column>
-                    <p:column headerText="ANO MODELO">
-                        <p:outputLabel value="#{carro.anomodelo}"/>
+
+                    <p:column headerText="AnoModelo">
+                        <p:outputLabel value="#{obj.anomodelo}"/>
                     </p:column>
-                    <p:column headerText="PESSOA">
-                        <p:outputLabel value="#{carro.pessoa.nome}"/>
+
+                    <p:column headerText="Pessoa">
+                        <p:outputLabel value="#{obj.pessoa.nome}"/>
                     </p:column>
+
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton action="#{controlecarro.editar(carro.id)}"
-                            ajax="false" icon="ui-icon-pencil" title="Editar"/>
-                            
-                            <p:commandButton action="#{controlecarro.remover(carro.id)}"
-                             ajax="false" icon="ui-icon-trash" title="Remover" update="@form"
-                             onclick="if(!confirm('Confirma a exclusão?')) return false"/>
+                            <p:commandButton actionListener="#{controlecarro.editar(obj.id)}" 
+                                             icon="ui-icon-pencil" title="Editar" 
+                                             oncomplete="PF('dlg').show();"  update="FormEdicao" process="@this"/>
+                            <p:commandButton actionListener="#{controlecarro.remover(obj.id)}" 
+                                             icon="ui-icon-trash" title="Remover"
+                                             update="@form growl" process="@this"
+                                             onclick="if (!confirm('Confirma a exclusão?'))
+                                                         return false"/>
                         </div>
                     </p:column>
+
                 </p:dataTable>
             </h:form>
+        </ui:define>
+
+        <ui:define name="dialogos">
+            <p:dialog widgetVar="dlg" header="Edição Carro" modal="true" resizable="false" width="60%" height="380">
+                <h:form id="FormEdicao" prependId="false">
+                    <p:growl id="growl"/>
+                    <p:tabView id="tab" prependId="false">
+                        <p:tab title="Dados Carro">
+                            <div align="center">
+                                <p:panelGrid columns="2" >
+
+                                    <p:outputLabel value="ID"/>
+                                    <p:inputText value="#{controlecarro.carro.id}" readonly="true" size="5"/>
+
+                                    <p:outputLabel value="Placa" for="txtPlaca"/>
+                                    <p:inputText id="txtPlaca" value="#{controlecarro.carro.placa}" size="8" maxlength="8"
+                                                 placeholder="obrigatorio" />
+
+                                    <p:outputLabel value="Renavam" for="txtRenavam"/>
+                                    <p:inputText id="txtRenavam" value="#{controlecarro.carro.renavam}" size="9" maxlength="9"
+                                                 placeholder="obrigatorio" />
+
+                                    <p:outputLabel value="Modelo" for="txtModelo"/>
+                                    <p:inputText id="txtModelo" value="#{controlecarro.carro.modelo}" size="30" maxlength="30"
+                                                 placeholder="obrigatorio" />
+
+                                    <p:outputLabel value="Fabricante" for="txtFabricante"/>
+                                    <p:inputText id="txtFabricante" value="#{controlecarro.carro.fabricante}" size="30" maxlength="30"
+                                                 placeholder="obrigatorio" />
+
+
+                                    <p:outputLabel value="AnoFabricação" for="txtAnoFabricacao"/>
+                                    <p:inputMask id="txtAnoFabricacao" mask="9999" value="#{controlecarro.carro.anofabricacao}" 
+                                                 size="4" maxlength="4"
+                                                 placeholder="obrigatorio"/>
+
+                                    <p:outputLabel value="AnoModelo" for="txtAnoModelo"/>
+                                    <p:inputMask id="txtAnoModelo" mask="9999" value="#{controlecarro.carro.anomodelo}" 
+                                                 size="4" maxlength="4"
+                                                 placeholder="obrigatorio"/>
+
+                                    <p:outputLabel value="Pessoa" for="selectPessoa"/>
+                                    <p:selectOneMenu id="selectPessoa" value="#{controlecarro.carro.pessoa}"
+                                                     filter="true" filterMatchMode="starsWith">
+                                        <f:converter converterId="converterPessoa"/>
+                                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um registro"/>
+                                        <f:selectItems value="#{controlecarro.daoPessoa.listaTodos}"
+                                                       var="p" itemLabel="#{p.nome}"/>
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                        
+                        <p:tab title="Conjuntos">
+                            <p:dataTable value="#{controlecarro.carro.acessorios}"
+                                         var="con" rowIndexVar="idxCon" id="listaConjuntos">
+                                <f:facet name="header">
+                                    <p:panelGrid columns="2">
+                                        <p:selectOneMenu value="#{controlecarro.acessorio}"
+                                                         id="selectAcessorio" filter="true" filterMatchMode="starsWith">
+                                            <f:converter converterId="converterAcessorio"/>
+                                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um registro"/>
+                                            <f:selectItems value="#{controlecarro.daoAcessorio.listaTodos}"
+                                                           var="acess" itemLabel="#{acess.descricao}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="Adicionar" actionListener="#{controlecarro.adicionarConjuntos()}"
+                                                         update="listaConjuntos growl"
+                                                         id="btnAdicionarConjuntos" process="btnAdicionarConjuntos selectAcessorio"
+                                                         icon="ui-icon-plus"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                                <p:column headerText="ID">
+                                    <p:outputLabel value="#{con.id}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Descrição">
+                                    <p:outputLabel value="#{con.descricao}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton id="btnRemoverConjuntos"
+                                                         actionListener="#{controlecarro.removerConjuntos(idxCon)}"
+                                                         process="btnRemoverConjuntos" update="listaConjuntos growl"
+                                                         icon="ui-icon-trash"
+                                                         onclick="if (!confirm('Confirma a remoção do conjunto?'))
+                                                                     return false"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                    <p:panel>
+                        <div align="center">
+                            <p:commandButton value="Salvar"
+                                             icon="ui-icon-disk"
+                                             actionListener="#{controlecarro.salvar()}"
+                                             oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                             update="FormEdicao growl FormListagem"
+                                             />   
+                        </div>
+                    </p:panel>
+
+                    <ui:include src="../../ajaxstatus.xhtml"/>
+                </h:form>
+            </p:dialog>
+
         </ui:define>
     </ui:composition>
 </html>

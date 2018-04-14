@@ -8,31 +8,61 @@ package ControleWeb;
 import Classes.Acessorios;
 import Classes.Carro;
 import Classes.Pessoa;
-import ClassesDao.AcessoriosDao;
+import ClassesDao.AcessorioDao;
 import ClassesDao.CarroDao;
 import ClassesDao.PessoaDao;
 import Util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Leandro
  */
 @ManagedBean(name="controlecarro")
-@SessionScoped
+@ViewScoped
 public class ControleCarro implements Serializable {
     
-    private CarroDao dao;
-    private Acessorios acessorios;
-    private Pessoa pessoa;
     private Carro carro;
+    private CarroDao<Carro> dao;
+    private PessoaDao<Pessoa> daoPessoa;
+    private AcessorioDao<Acessorios> daoAcessorio;
+    private Acessorios acessorio;
     
     
     public ControleCarro()
     {
-        dao= new CarroDao();
+        dao= new CarroDao<>();
+        daoPessoa= new PessoaDao<>();
+        daoAcessorio= new AcessorioDao<>();
+    }
+    
+    public void adicionarConjuntos()
+    {
+        if(acessorio!=null)
+        {
+            if(!carro.getAcessorios().contains(acessorio))
+            {
+                carro.getAcessorios().add(acessorio);
+                Util.mensageminformacao("Conjunto adicionado com sucesso!");
+            }
+            else
+            {
+                Util.mensagemErro("Este conjunto já existe na sua lista!");
+            }
+        }
+        else
+        {
+            Util.mensagemErro("selecione um conjunto!");
+        }
+    }
+    
+    public void removerConjuntos(int index)
+    {
+        acessorio=carro.getAcessorios().get(index);
+        carro.getAcessorios().remove(acessorio);
+        Util.mensageminformacao("Conjunto removido com sucesso!");
     }
     
     public String listar()
@@ -40,44 +70,44 @@ public class ControleCarro implements Serializable {
         return "/privado/carro/listar?faces-redirect=true";
     }
     
-    public String novo()
+    public void novo()
     {
         carro=new Carro();
         
-        
-        return "formulario?faces-redirect=true";
     }
     
-    public String salvar()
+    public void salvar()
     {
-        if(dao.salvar(carro))
+        boolean persistiu=false;
+        
+        if(carro.getId()==null)
+        {
+            persistiu=dao.persist(carro);
+        }
+        else
+        {
+            persistiu=dao.merge(carro);
+        }
+        if(persistiu)
         {
             Util.mensageminformacao(dao.getMensagem());
-            return "listar?faces-redirect=true";
         }
         else
         {
             Util.mensagemErro(dao.getMensagem());
-            return "formulario?faces-redirect=true";
         }
     }
     
-    public String cancelar()
-    {
-        return "listar?faces-redirect=true";
-    }
     
-    public String editar(Integer id)
+    public void editar(Integer id)
     {
         carro=dao.localizar(id);
-        
-        return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id)
     {
         carro=dao.localizar(id);
-        if(dao.remover(carro))
+        if(dao.remove(carro))
         {
             Util.mensageminformacao(dao.getMensagem());
         }
@@ -86,30 +116,6 @@ public class ControleCarro implements Serializable {
             Util.mensagemErro(dao.getMensagem());
         }
         
-    }
-
-    public CarroDao getDao() {
-        return dao;
-    }
-
-    public void setDao(CarroDao dao) {
-        this.dao = dao;
-    }
-
-    public Acessorios getAcessorios() {
-        return acessorios;
-    }
-
-    public void setAcessorios(Acessorios acessorios) {
-        this.acessorios = acessorios;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
     }
 
     public Carro getCarro() {
@@ -120,6 +126,38 @@ public class ControleCarro implements Serializable {
         this.carro = carro;
     }
 
-    
+    public CarroDao<Carro> getDao() {
+        return dao;
+    }
+
+    public void setDao(CarroDao<Carro> dao) {
+        this.dao = dao;
+    }
+
+
+    public AcessorioDao<Acessorios> getDaoAcessorio() {
+        return daoAcessorio;
+    }
+
+    public void setDaoAcessorio(AcessorioDao<Acessorios> daoAcessorio) {
+        this.daoAcessorio = daoAcessorio;
+    }
+
+    public Acessorios getAcessorio() {
+        return acessorio;
+    }
+
+    public void setAcessorio(Acessorios acessorio) {
+        this.acessorio = acessorio;
+    }
+
+    public PessoaDao<Pessoa> getDaoPessoa() {
+        return daoPessoa;
+    }
+
+    public void setDaoPessoa(PessoaDao<Pessoa> daoPessoa) {
+        this.daoPessoa = daoPessoa;
+    }
+
     
 }

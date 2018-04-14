@@ -5,8 +5,10 @@
  */
 package ControleWeb;
 
-import Classes.Pessoa;
-import ClassesDao.PessoaDao;
+import Classes.Cobertura;
+import Classes.Seguro;
+import ClassesDao.CoberturaDao;
+import ClassesDao.SeguroDao;
 import Util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
@@ -16,27 +18,29 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Leandro
  */
-@ManagedBean(name="controlepessoa")
+@ManagedBean(name="controlecobertura")
 @ViewScoped
-public class ControlePessoa implements Serializable {
+public class ControleCobertura implements Serializable {
     
-    private PessoaDao<Pessoa> dao;
-    private Pessoa pessoa;
+    private CoberturaDao<Cobertura> dao;
+    private Cobertura cobertura;
+    private SeguroDao<Seguro> daoSeguro;
     
     
-    public ControlePessoa()
+    public ControleCobertura()
     {
-        dao= new PessoaDao<>();
+        dao= new CoberturaDao<>();
+        daoSeguro=new SeguroDao<>();
     }
     
     public String listar()
     {
-        return "/privado/pessoa/listar?faces-redirect=true";
+        return "/privado/cobertura/listar?faces-redirect=true";
     }
     
     public void novo()
     {
-        pessoa=new Pessoa();
+        cobertura=new Cobertura();
         
     }
     
@@ -44,13 +48,13 @@ public class ControlePessoa implements Serializable {
     {
         boolean persistiu=false;
         
-        if(pessoa.getId()==null)
+        if(cobertura.getId()==null)
         {
-            persistiu=dao.persist(pessoa);
+            persistiu=dao.persist(cobertura);
         }
         else
         {
-            persistiu=dao.merge(pessoa);
+            persistiu=dao.merge(cobertura);
         }
         if(persistiu)
         {
@@ -65,13 +69,13 @@ public class ControlePessoa implements Serializable {
     
     public void editar(Integer id)
     {
-        pessoa=dao.localizar(id);
+        cobertura=dao.localizar(id);
     }
     
     public void remover(Integer id)
     {
-        pessoa=dao.localizar(id);
-        if(dao.remove(pessoa))
+        cobertura=dao.localizar(id);
+        if(dao.remove(cobertura))
         {
             Util.mensageminformacao(dao.getMensagem());
         }
@@ -82,20 +86,31 @@ public class ControlePessoa implements Serializable {
         
     }
 
-    public PessoaDao getDao() {
+    public CoberturaDao<Cobertura> getDao() {
         return dao;
     }
 
-    public void setDao(PessoaDao dao) {
+    public void setDao(CoberturaDao<Cobertura> dao) {
         this.dao = dao;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Cobertura getCobertura() {
+        return cobertura;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setCobertura(Cobertura cobertura) {
+        this.cobertura = cobertura;
     }
+
+    public SeguroDao<Seguro> getDaoSeguro() {
+        return daoSeguro;
+    }
+
+    public void setDaoSeguro(SeguroDao<Seguro> daoSeguro) {
+        this.daoSeguro = daoSeguro;
+    }
+
+   
+
     
 }

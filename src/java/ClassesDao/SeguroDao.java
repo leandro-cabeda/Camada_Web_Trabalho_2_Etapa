@@ -4,24 +4,25 @@
  * and open the template in the editor.
  */
 package ClassesDao;
-import Classes.Pessoa;
+
+import Classes.Seguro;
 import DaoGenerico.DaoGenerico;
 import java.io.Serializable;
+
 
 /**
  *
  * @author Leandro
  */
-public class PessoaDao <T> extends DaoGenerico<Pessoa>  implements Serializable {
+public class SeguroDao <T> extends DaoGenerico<Seguro>  implements Serializable {
 
-    public PessoaDao()
+    public SeguroDao()
     {
         super();
         // define a classe persistente
-        ClassePersistente=Pessoa.class;
+        ClassePersistente=Seguro.class;
         
         // define o atributo padrão ao inicializar da ordem
-        ordem="nome";
+        ordem="valorFipe";
     }
-    
 }
